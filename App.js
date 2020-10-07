@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Button, I18nManager, StyleSheet, Text, View } from "react-native";
 import * as Updates from "expo-updates";
+import useStartupHook from "./useStartupHook";
 
 async function toggleRTL() {
   await I18nManager.forceRTL(I18nManager.isRTL ? false : true);
@@ -9,6 +10,11 @@ async function toggleRTL() {
 }
 
 export default function App() {
+    const isLoadingComplete = useStartupHook();
+
+    if (!isLoadingComplete) {
+        return null;
+    }
   return (
     <View style={styles.container}>
       <Text>{new Date().toString()}</Text>
@@ -26,7 +32,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
 });
